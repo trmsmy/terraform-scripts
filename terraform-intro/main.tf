@@ -1,15 +1,28 @@
 provider "aws" {
   version = "~> 2.59"
   region = "us-east-2"
-  shared_credentials_file = "C:\\Users\\Ramast1\\.aws\\credentials"
-  profile                 = "mycloud_script"
+  shared_credentials_file = "C:\\Users\\me\\.aws"
+  profile                 = "myawscloud"
 }
 
 variable "server_port" {
   description = "The port for the httpd web server" 
   type = number 
-  #default = 8080
+  default = 8080
 }
+
+variable "noof_servers_min" {
+  description = "Minimum number of servers in autoscaling group" 
+  type = number 
+  default = 1
+}
+
+variable "noof_servers_max" {
+  description = "Maximum number of servers in autoscaling group" 
+  type = number 
+  default = 2
+}
+
 
 resource "aws_launch_configuration" "example" {
   image_id        = "ami-0c55b159cbfafe1f0"
@@ -32,15 +45,15 @@ resource "aws_autoscaling_group" "example" {
   launch_configuration = aws_launch_configuration.example.id
   availability_zones = data.aws_availability_zones.all.names
 
-  min_size = 3
-  max_size = 10
+  min_size = var.noof_servers_min
+  max_size = var.noof_servers_max
 
   load_balancers    = [aws_elb.example.name]
   health_check_type = "ELB"
 
   tag {
     key                 = "Name"
-    value               = "terraform-asg-example"
+    value               = "terraform-ec2-example"
     propagate_at_launch = true
   }
 }
@@ -80,23 +93,26 @@ resource "aws_security_group" "example" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+
 }
 
 resource "aws_security_group" "elb" {
 
   name = "terraform-example-elb"
 
-  # Allow all outbound
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+
   # Inbound HTTP from anywhere
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+    # Allow HTTP:80 outbound
+  egress {
+    from_port   = 8080
+    to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

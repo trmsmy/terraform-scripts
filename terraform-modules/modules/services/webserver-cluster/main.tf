@@ -1,10 +1,3 @@
-// provider "aws" {
-//   version = "~> 2.59"
-//   region = "us-east-2"
-//   shared_credentials_file = "C:\\Users\\Ramast1\\.aws\\credentials"
-//   profile                 = "mycloud_script"
-// }
-
 resource "aws_launch_configuration" "example" {
   image_id        = "ami-0c55b159cbfafe1f0"
   instance_type   = var.instance_type

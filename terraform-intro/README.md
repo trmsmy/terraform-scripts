@@ -38,7 +38,7 @@ At end of the deployment, it also prints all the output values from the script t
 To change the default port for Apache
 
 ``` 
-terraform apply -var"server_port=<NEW_PORT>" 
+terraform apply -var="server_port=<NEW_PORT>" 
 ```
 
 ### Terraform Destroy

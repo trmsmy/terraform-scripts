@@ -1,8 +1,8 @@
 provider "aws" {
   version = "~> 2.59"
   region = "us-east-2"
-  shared_credentials_file = "C:\\Users\\Ramast1\\.aws\\credentials"
-  profile                 = "mycloud_script"
+  shared_credentials_file = "C:\\Users\\me\\.aws"
+  profile                 = "myawscloud"
 }
 
 resource "aws_instance" "example" {

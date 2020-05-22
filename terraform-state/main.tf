@@ -1,8 +1,8 @@
 provider "aws" {
   region = "us-east-2"
   version = "~> 2.59"
-  shared_credentials_file = "C:\\Users\\Ramast1\\.aws\\credentials"
-  profile                 = "mycloud_script"
+  shared_credentials_file = "C:\\Users\\me\\.aws"
+  profile                 = "myawscloud"
 }
  
 terraform {
@@ -14,17 +14,17 @@ terraform {
     dynamodb_table = "terraform-state-locks"
     encrypt        = true
 
-    shared_credentials_file = "C:\\Users\\Ramast1\\.aws\\credentials"
-    profile                 = "mycloud_script"
+    shared_credentials_file = "C:\\Users\\me\\.aws"
+    profile                 = "myawscloud"
   }
 }
 
 resource "aws_s3_bucket" "terraform_state" {
-    bucket = "tamilcloud-terraform-state" 
+  bucket = "tamilcloud-terraform-state" 
 
-    versioning {
-        enabled = true 
-    }
+  versioning {
+      enabled = true 
+  }
 
   server_side_encryption_configuration {
     rule {
